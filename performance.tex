@@ -1,0 +1,43 @@
+\begin{table*}[t]
+\centering
+	\caption{\label{tab:performance}
+		\sz{Render times of all our results (using our ``unidir.'' and ``bidir.'' estimators) as well as baseline models with ``trivial'' BSDFs (that require no stochastic evaluation).
+		All the multi-layer models are described using nesting BSDFs for the unidirectional estimator and the explicit implementations for the bidirectional one.
+		The baseline models exhibit different appearances and are created solely for performance comparison.
+		All the timings are converted to a 6-core Intel i7-6800K CPU time, and those between parentheses indicate render time per mega-pixel.
+		The numbers in bold correspond to methods used for creating the paper figures.
+		Please refer to the supplemental material for all the other renderings.}
+	}
+    %
+	\begin{tabular}{l|c|c|rr|rr|rr}
+	%\hline
+	& \multirow{2}{*}{\textbf{Image size}}  & \multirow{2}{*}{\textbf{Spp}} & \multicolumn{6}{c}{\textbf{Render time}}\\
+	& & & \multicolumn{2}{c}{\textbf{Unidir.}} & \multicolumn{2}{c}{\textbf{Bidir.}} & \multicolumn{2}{c}{\textbf{Trivial}}\\
+	\hline
+	\textbf{Fig. \ref{fig:teaser} (a)} & 3000$\times$2000 & 1024           & \sz{2.5 h}  & \sz{(25 m)} & \sz{\textbf{2.2 h}} & \sz{\textbf{(22 m)}}  & \sz{38 m}  & \sz{(6.3 m)}\\
+	%\hline
+	\textbf{Fig. \ref{fig:result_glints} (b)} & 1024$\times$1024 & 256     & \sz{\textbf{2.2 m}} & \sz{\textbf{(2.1 m)}} & \sz{2.6 m} & \sz{(2.5 m)}   & \sz{1.3 m} & \sz{(1.2 m)}\\
+	%\hline
+	\textbf{Fig. \ref{fig:result_transmit}, top} & 800$\times$1200  & 512  & \sz{15.2 m}   & \sz{(7.9 m)} & \sz{\textbf{24 m}}  & \sz{\textbf{(12.5 m)}}  & \sz{2.4 m} & \sz{(1.3 m)}\\
+	%\hline
+	\textbf{Fig. \ref{fig:result_transmit}, bot.} & 512$\times$512   & 1024 & \sz{6.4 m} & \sz{(6.1 m)} & \sz{\textbf{13 m}} & \sz{\textbf{(12.6 m)}}  & \sz{1.6 m} & \sz{(1.5 m)}\\
+	%\hline
+	\textbf{Fig. \ref{fig:result_mat} (a)} & 876$\times$584   & 256        & \sz{\textbf{1.1 m}} & \sz{\textbf{(2.2 m)}} & \sz{1.4 m} & \sz{(2.7 m)}   & \sz{0.6 m} & \sz{(1.1 m)}\\
+	%\hline
+	\textbf{Fig. \ref{fig:result_mat} (b)} & 876$\times$584   & 256        & \sz{\textbf{1.1 m}} & \sz{\textbf{(2.2 m)}} & \sz{1.4 m} & \sz{(2.7 m)}   & \sz{0.5 m} & \sz{(0.9 m)}\\
+	%\hline
+	\textbf{Fig. \ref{fig:result_mat} (c)} & 876$\times$584   & 256        & \sz{\textbf{2.5 m}} & \sz{\textbf{(4.9 m)}} & \sz{5.4 m} & \sz{(10.5 m)}  & \sz{0.5 m} & \sz{(0.9 m)}\\
+	%\hline
+	\textbf{Fig. \ref{fig:redcloth} (b)} & 640$\times$540   & 256        & \sz{1.5 m}   & \sz{(4.3 m)} & \sz{\textbf{1.9 m}} & \sz{\textbf{(5.5 m)}}   & \sz{0.5 m} & \sz{(1.4 m)}\\
+	%\hline
+	\textbf{Fig. \ref{fig:result_multilayer} (a)} & 1200$\times$1400 & 256 & \sz{\textbf{6.7 m}}  & \sz{\textbf{(4.0 m)}} & \sz{12 m}  & \sz{(7.1 m)}   & \sz{3.7 m} & \sz{(2.2 m)}\\
+	%\hline
+	\textbf{Fig. \ref{fig:result_multilayer} (b)} & 1200$\times$1400 & 256 & \sz{\textbf{7.0 m}}  & \sz{\textbf{(4.2 m)}} & \sz{13 m}  & \sz{(7.7 m)}   & \sz{3.7 m} & \sz{(2.2 m)}\\
+	%\hline
+	\textbf{Fig. \ref{fig:result_multilayer} (c)} & 1200$\times$1400 & 256 & \sz{67 m} & \sz{(40 m)}  & \sz{\textbf{20 m}}  & \sz{(\textbf{12 m})}    & \sz{4.7 m} & \sz{(2.8 m)}\\
+	%\hline
+	\end{tabular}
+	%\\[2pt]
+	%\footnotesize{*T/MP: Render time per mega-pixel}
+\end{table*}
+

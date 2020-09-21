@@ -1,0 +1,114 @@
+\section{Our Estimators}
+\label{sec:ours}
+%
+We now describe our specific layered BSDF method within a physically based rendering framework. This can be seen as a specific Monte Carlo estimator based on the formulation depicted in \S\ref{sec:background}. Standard rendering frameworks require at least two key operations to fully define a BSDF model: sampling and evaluation. Sampling produces the outgoing direction $\omegaout$ given the incoming one $\omegain$, while evaluation answers the BSDF query for given $\omegain$ and $\omegaout$. Note that the values returned from both sampling and evaluation procedures are themselves stochastic, and equal the true BSDF value (or sampling weight) only in expectation.
+
+Furthermore, multiple importance sampling (MIS) is commonly used and key to obtaining low noise results under complex lighting conditions. This technique typically uses the sampling pdf of the BSDF, which is  hard to compute exactly for layered BSDF models; however, we show that an approximate pdf is sufficient for MIS and can be computed quickly.
+
+\subsection{BSDF Sampling}
+\label{subsec:ours_sample}
+%
+Sampling a BSDF is the problem of drawing the outgoing direction $\omegaout$ given the incoming one $\omegain$, with a pdf proportional (exactly or approximately) to the value $f_l(\omegain, \omegaout)$ (times the cosine term, if possible).
+In our case, we draw $\omegaout$ simply by following the stochastic process given by light interacting with the layered configuration.
+That is, we utilize a pure forward (without next-event estimation) path tracing process that starts with a ray with direction $-\omegain$ and explicitly simulates all interactions between the ray and the layer's interfaces and internal media by sampling the corresponding BSDFs and phase functions, accumulating a throughput value along the way.
+When the ray eventually leaves the layer, its direction gives $\omegaout$ and the throughput of the full light transport path gives the sample weight. Formally, this weight is an estimate of the BSDF value, times the exitant cosine direction, divided by the sampling pdf in solid angle measure.
+%\todo{A figure?}
+
+Although the aforementioned simulation follows standard Monte Carlo path tracing, it is usually much more efficient than tracing paths in the global scene thanks to the simplicity of the flat slab configuration (under which ray tracing becomes simple numerical computation, not requiring any acceleration structures).
+
+\subsection{BSDF Evaluation}
+\label{subsec:ours_eval}
+%
+To evaluate our BSDF $f_l$ at given incoming and outgoing directions $\omegain$ and $\omegaout$, we use a Monte Carlo technique analogous to a forward path tracer with next-event estimation (NEE). In standard path tracing, a shading point would be directly connected to a light source in a process often called ``direct illumination'', and this is crucial for low variance rendering. In an analogy to this technique, consider a shading point inside a single layer slab (whether on the bottom interface or a scattering point within the medium). We would like to create a path ending with $\omegaout$, intuitively connecting it to an external directional lightsource with direction $\omegaout$. However, this is difficult, as direct connections between the shading point and the desired external direction is usually invalid due to the layer's top refractive interface.
+
+To address this problem, we introduce our NEE that directly connects scattering events across potentially rough refractive interfaces. Assume without loss of generality that our path tracing starts with direction $\omegain$. At each scattering event, we need to find a direction $\omegaout'$ so that $\omegaout' \to \omegaout$ follows the BSDF at the interface.
+To this end, we draw $\omegaout'$ by sampling the interface BSDF backwards, given $\omegaout$. Finally, we simply multiply the accumulated throughput by the weight returned from the sampling routine, and the BSDF (or phase function) value at the scattering event.
+
+Note that this ``backward'' sampling is conceptually similar to bidirectional path tracing (i.e. sampling an additional path segment from the light). However, the fact that only directions between vertices matter (and not their horizontal positions) works significantly in our favor, because we can never ``miss'' the shading point by backward sampling, nor do we have to solve for the position of a connecting vertex like Walter et al.'s approach for refraction through triangle mesh boundaries \shortcite{Walter2009}. Note, in practice, one should be careful to use the correct ``transport'' mode of the BSDF when sampling it from the camera and/or from the light; this makes a difference for refractive transmission due to the non-reciprocity discussed in \S\ref{sec:background}.
+
+Unlike traditional BSDFs that are evaluated deterministically, the evaluations of our BSDFs are stochastic.
+Fortunately, the additional variance introduced by our stochastic evaluation is usually minor thanks to our effective NEE technique.
+Compared to explicitly simulating the layered geometry, our technique offers much better convergence (see Figure~\ref{fig:validation1} in \S\ref{sec:results}).
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[height=1in]{images/illustration/mis0_embeded.pdf}
+	\caption{\label{fig:mis0}
+		\textbf{Approximate pdfs for MIS:} Computing the true sampling pdf of the layered BSDF model would be intractable, but multiple importance sampling (MIS) in the global light transport works well with our approximate weighting, constructed based on the upper and lower interface's pdfs (see Figure~\protect\ref{fig:pdfchoice}).}
+\end{figure}
+
+\begin{figure*}[t]
+	\centering
+	\addtolength{\tabcolsep}{-4pt}
+	\begin{tabular}{cccccc}
+		\multicolumn{2}{c}{\includegraphics[width=0.325\textwidth]{images/validations/mi_max.jpg}} & 
+		\multicolumn{2}{c}{\includegraphics[width=0.325\textwidth]{images/validations/mi_min.jpg}} & 
+		\multicolumn{2}{c}{\includegraphics[width=0.325\textwidth]{images/validations/mi_combine.jpg}} \\
+		\includegraphics[width=0.16\textwidth]{images/validations/mi_max2.jpg} & 
+		\includegraphics[width=0.16\textwidth]{images/validations/mi_max1.jpg} & 
+		\includegraphics[width=0.16\textwidth]{images/validations/mi_min2.jpg} & 
+		\includegraphics[width=0.16\textwidth]{images/validations/mi_min1.jpg} & 
+		\includegraphics[width=0.16\textwidth]{images/validations/mi_combine2.jpg} & 
+		\includegraphics[width=0.16\textwidth]{images/validations/mi_combine1.jpg} \\
+		\multicolumn{2}{c}{"Max"} & \multicolumn{2}{c}{"Min"} & \multicolumn{2}{c}{"Max"+"Min"}
+	\end{tabular}
+	\caption{\label{fig:pdfchoice}
+		\textbf{Approximate pdf weighting heuristics:}
+		The ``max'' heuristic works well except if the light source is small and/or top interface roughness is larger than bottom roughness, and the``min'' heuristic works exactly in the opposite way. Combining them leads to a more robust heuristic.
+	}
+\end{figure*}	
+
+\subsection{Pdf approximation for MIS}
+\label{subsec:ours_global_MIS}
+%
+Multiple importance sampling (MIS) is crucial for generating low-noise results using Monte Carlo techniques.
+To enable MIS with balance or power heuristics, the probability density of provided samples generally needs to be evaluated.
+In case of BSDF sampling, this boils down to evaluating $p(\omegaout \;|\; \omegain)$, the probability density of $\omegaout$ given $\omegain$ (assuming that the sampling process draws $\omegaout$ and fixes $\omegain$).
+
+Although $p(\omegaout \;|\; \omegain)$ can be easily evaluated for traditional BSDFs with analytical sampling strategies, no closed-form probability densities exist in our case due to our path tracing based sampling~(\S\ref{subsec:ours_sample}).
+Fortunately, we do not need the exact probability densities for MIS to work. Typically, pdfs are used merely as convenient weighting functions in MIS, but there is no requirement on the weighting functions being exact pdfs. Instead, in rough terms, we need the property that the weighting function $w_l(\omegaout \;|\; \omegain)$ is never low when the true pdf is high. We design a heuristic weighting function with this property as follows.
+Given $\omegain$ and $\omegaout$, we use the pdfs from the top and bottom interfaces (Figure~\ref{fig:mis0}).
+In particular, we set
+%
+\begin{equation}
+w_l(\omegaout \;|\; \omegain) = \begin{cases}
+\min(p_\uparrow(\omegaout \;|\; \omegain),\ p_\downarrow(\omegaout' \;|\; \omegain')) & \text{$f_\uparrow$ is rougher},\\
+\max(p_\uparrow(\omegaout \;|\; \omegain),\ p_\downarrow(\omegaout' \;|\; \omegain')) & \text{Otherwise},\\
+\end{cases}
+\end{equation}
+%
+where $p_\uparrow$ and $p_\downarrow$ are respectively the sampling densities associated with the top and bottom interfaces, and $\omegain'$, $\omegaout'$ are refracted versions of $\omegain$ and $\omegaout$ (based on the BSDF of the top interface). We observe MIS working as expected with this choice (Figures~\ref{fig:pdfchoice} and \ref{fig:validation3}).
+
+\begin{figure}[b]
+	\centering
+	\includegraphics[width=0.98\columnwidth]{images/illustration/nested0_embeded.pdf}
+	\caption{\label{fig:nested0}
+		\textbf{Multi-layer materials:}
+		Our BSDF can be nested to model multiple layers with varying properties.
+	}
+\end{figure}
+
+
+\subsection{Multi-Layer Configuration}
+\label{subsec:multi_layer}
+%
+Since our BSDF model allows the top and bottom interfaces to possess arbitrary BSDFs, it can be nested to enable multi-layer configurations.
+Figure~\ref{fig:nested0} illustrates an example layered BSDF with its bottom interface (illustrated in red) having another layered BSDF.
+The resulting full BSDF has two effective layers and three interfaces. This technique can be used to construct deeper layerings as well.
+
+
+\subsection{Spatial Variation}
+
+All parameters of our model can be spatially varying (texture-mapped). Note that this introduces an approximation: for each surface point, the internal Monte Carlo simulation specific to that point still assumes an infinite slab without spatial variation. However, this approximation is common in graphics for other BSDF models as well, and does not lead to perceptible artifacts in our results. 
+
+A specific case of spatial variation that deserves special mention is layer height variation defined by a heightfield texture, which we implement by turning the gradient of the heightfield into a normal map, and additionally modifying the layer thickness accordingly. This simple technique can be used to obtain various effects, as demonstrated in our results.
+
+\begin{figure}[b]
+	\centering
+	\includegraphics[width=\columnwidth]{images/illustration/pipeline_embeded.pdf}
+	\caption{\label{fig:model_creation}
+		\textbf{Generating spatially varying parameters:}
+		Using a height field as input (top), we use it to (i)~derive a normal map applied to the top interface; and (ii)~drive spatially varying optical thicknesses for the layer medium (bottom left).
+		Coupling both information, highly realistic spatially varying BSDFs can be created (bottom right).
+	}
+\end{figure}

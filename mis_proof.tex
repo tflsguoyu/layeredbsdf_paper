@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{parskip}
+
+\title{MIS with stochastic function and weight evaluation}
+\date{September 2018}
+\author{Yu Guo, Milo\v s Ha\v san and Shuang Zhao}
+
+\begin{document}
+
+\maketitle
+
+This is a supplementary document to the paper ``Position-free Monte Carlo simulation for arbitrary layered BSDFs'', appearing in SIGGRAPH Asia 2018.
+
+
+\section{Introduction}
+
+While Monte	Carlo integration and multiple importance sampling (MIS) are widely used in practice, we use extended versions of these techniques: our MIS weighting is based on approximate (not exact) pdfs, and our weight and function evaluation are both stochastic (i.e. they consume additional random numbers, and are  equal to the true weight and function value only in expectation). For this reason, we review standard Monte Carlo and MIS estimators, and show that our extensions still lead to unbiased results.
+
+
+\section{Monte Carlo estimator}
+
+Let $f(x)$ be an integrable function on domain $D$, and let $X$ be a random variable on domain $D$ with probability distribution $p(x)$, such that $p(x) > 0$ whenever $f(x) \neq 0$. An integral
+\[
+I = \int_D f(x) \ dx
+\]
+can be approximated by the unbiased estimator
+\[
+X_f = \frac{f(X)}{p(X)}.
+\]
+It is easy to see that $X_f$ is an unbiased estimate of $I$:
+\[
+E_X[X_f] = \int_D p(x) \frac{f(x)}{p(x)} \ dx = \int_D f(x) \ dx = I.
+\]
+Note, the cancellation of $p(x)$ is always possible due to the assumption that $p(x) > 0$ for all $x$ where $f(x)$ is non-zero.
+
+
+\section{Combining estimators through MIS}
+
+Multiple importance sampling (MIS) combines two different sampling strategies (random variables) $X_1$ and $X_2$ on $D$, with pdfs $p_1(x)$ and $p_2(x)$, to compute the integral $I$ more robustly. This is achieved by choosing weighting functions $w_1(x)$ and $w_2(x)$ such that $w_1(x) + w_2(x) = 1$ for all $x \in D$.
+
+Furthermore, we shall require that if $p_1(x) = 0$ or $p_2(x) = 0$, the corresponding $f(x) = 0$.
+
+The integral $I$ is thus split into $I_1$ and $I_2$:
+\[
+I = I_1 + I_2 = \int_D w_1(x) f(x) \ dx + \int_D w_2(x) f(x) \ dx.
+\]
+
+The following are unbiased estimators for $I_1$ and $I_2$:
+\[
+X_f^1 = \frac{w_1(X)f(X)}{p_1(X)} \qquad X_f^2 = \frac{w_2(X)f(X)}{p_2(X)}.
+\]
+This can be seen as follows:
+\[
+E_X[X_f^1] = \int_D p_1(x) \frac{w_1(x)f(x)}{p_1(x)} \ dx = \int_D w_1(x) f(x) \ dx = I_1,
+\]
+and the same argument works for $I_2$. Again, the reason the cancellation of $p_1(x)$ works is that either it is non-zero, or $f(x) = 0$, due to the assumption above.
+
+Also note that we made no assumptions on the weights other than that they sum to 1. In particular, there is no requirement that the weights be derived from exact pdfs, and we are free to base them on approximate pdfs, among other choices.
+
+
+\section{Stochastic function evaluation}
+
+Now suppose that the function evaluation is itself stochastic, i.e. it is an unbiased estimator $f(x,R)$ of the true value of $f(x)$, that uses a uniform random number $R$ on the interval $[0,1)$ during its evaluation. The argument can be easily extended for the case of consuming multiple uniform random numbers. We use a single random number in the proof for brevity.
+
+Because the function estimator is unbiased, we have $E_R[f(x,R)] = \int_0^1 f(x,r) \ dr = f(x)$ for all $x$. Therefore, our full estimator becomes:
+\[
+X_f = \frac{f(X,R)}{p(X)}.
+\]
+We can see that this estimator is still unbiased, by computing its expected value over $X$ \emph{and} $R$:
+\[
+E_{X,R}[X_f] = \int_D \int_0^1 p(x) \frac{f(x,r)}{p(x)} \ dr \ dx = \int_D p(x) \frac{\int_0^1 f(x,r) \ dr}{p(x)} \ dx = \int_D p(x) \frac{f(x)}{p(x)} \ dx = I
+\]
+
+
+
+\section{Stochastic weight and function evaluation}
+
+When both the weight evaluation and the function evaluation in an MIS estimator are stochastic, the resulting estimator is still unbiased, provided that the random numbers used by the weight and the function are independent (which enables us to rewrite the joint integral over both random choices into separate integrals). Specifically, consider an unbiased estimator $w_1(x,R_1)$ of the true value of $w_1(x)$, and an unbiased estimator $f(x,R_2)$ of the true value of $f(x)$, based on uniform random numbers $R_1$ and $R_2$ on the interval $[0,1)$. (again, this can be easily extended for the case of consuming multiple uniform random numbers.) The estimator for integral $I_1$ will become:
+\[
+X_f^1 = \frac{w_1(X,R_1) f(X,R_2)}{p_1(X)}
+\]
+We can see that this estimator is unbiased, by computing its expected value over $X$, $R_1$ and $R_2$:
+\[
+E_{X,R_1,R_2}[X_f^1] =
+\int_D \int_0^1 \int_0^1 p_1(x) \frac{w_1(x,r_1) f(x,r_2)}{p_1(x)} \ dr_1 \ dr_2 \ dx =
+\]
+\[
+\int_D  p_1(x) \frac{\int_0^1 w_1(x,r_1) \ dr_1 \cdot \int_0^1 f(x,r_2) \ dr_2}{p_1(x)} \ dx =
+\int_D  p_1(x) \frac{w_1(x) f(x)}{p_1(x)} \ dx = I_1.
+\]
+The same argument can be used for $X_f^2$.
+
+
+\section{Discussion}
+
+{\bf Application to direct illumination integral.} In our application, the integral of interest $I$ is normally the direct illumination estimate at a shading point. The function $f(x)$ involves the product of the BSDF and illumination values; this is integrated over the unit sphere (or unit hemisphere for BRDFs with no transmission), which is the domain $D$. The random variables $X_1$ and $X_2$ are outgoing directions $\omega_o$ chosen by light sampling and BSDF sampling, respectively. For the case of light sampling, we need to stochastically evaluate the MIS weight and BSDF value for the chosen $\omega_o$; these evaluations will consume vectors of uniform random numbers $R_1$ and $R_2$, respectively.
+
+{\bf No approximation of pdfs in estimator denominators.} While in the main paper we use approximate stochastic pdfs to define the weights, we never approximate the pdfs in the denominators of our estimators. In our case, the accurate values of these pdfs are already baked into the $f/p$ estimates returned by the position-free Monte Carlo simulations.
+
+{\bf Sum of stochastic weights.} The sum of the stochastic approximations to weights $w_1$ and $w_2$ will generally not be exactly 1, but this is not required. We simply require that
+\begin{enumerate}
+    \item the expected values of the weights sum to 1, so that the integral $I$ separates correctly into $I_1$ and $I_2$,
+    \item $X_f^1$ and $X_f^2$ are unbiased estimators for $I_1$ and $I_2$, respectively.
+\end{enumerate}
+The combination of these properties implies an unbiased estimate for $I$.
+
+
+\end{document}

@@ -1,0 +1,35 @@
+\sz{
+\section{Detailed Derivations}
+\label{sec:derivation}
+
+We now provide detailed derivations for the key equations in \S\ref{sec:path-formulation}.
+
+\myparagraph{Position-free radiative transfer equation}
+Traditionally, the radiative transfer equation (RTE) involves an integral over free-flight distance $t$:
+%
+\begin{multline}
+\label{eq:IRTE0}
+L_v(z, \bom) = S(z, \bom) \ + \\
+\int_0^{t'} \exp(-t \sigma_t) \, \int_{\Sph} \hat f_p(\bom', \bom) \, L_v(z', \bom') \,\intd \bom' \intd t,
+\end{multline}
+%
+where $z' := z - t\cos\bom$ and $t'$ denotes the distance between $z$ and the closest layer boundary.
+Since $t = (z - z')/\cos\bom$, changing the integration variable from $t$ to $z'$ in Eq.~\eqref{eq:IRTE0} yields an additional factor of $(\cos\bom)^{-1}$ which in turn gives our position-free RTE~\eqref{eq:IRTE}.
+Notice that the change-of-variable ratio only appears within the integration (and not in the source term $S$).
+
+\myparagraph{Cosines in path contribution}
+The contribution $f$ of a light path $\bar{x}$ can be obtained by repeatedly expanding the rendering equation~\eqref{eq:RE} and our position-free RTE~\eqref{eq:IRTE}.
+
+Similar to the traditional path integral formulation, for each vertex $z_i$ corresponding to an interface event (i.e., reflection or refraction), a cosine term $|\cos\bd_i|$ is needed to ensure the measure of projected solid angle.
+%For the volumetric scattering events, the cosine terms are absent (as the inner integral of the RTE~\eqref{eq:IRTE} already uses the solid angle measure).
+On the other hand, a segment of our light path connecting two depths $z_i$ and $z_{i + 1}$ via direction $\bd_i$ can yield an additional $|\cos\bd_i|^{-1}$ when $z_{i + 1}$ corresponds to a volumetric scattering.
+Thus, for each $i$, the path contribution involve a factor of $|\cos\bd_i|^{\alpha_i}$ with:
+%
+\begin{itemize}
+	\item $\alpha_i = 1$ if $z_i$ and $z_{i + 1}$ are both on interfaces;
+	\item $\alpha_i = 0$ (i.e., no $\cos\bd_i$ term) if (i)~$z_i$ is volumetric and $z_{i + 1}$ lies on an interface (so that no $\cos\bd_i$ terms appear during expansion), or (ii)~$z_i$ is interfacial and $z_{i + 1}$ is volumetric (so that both $|\cos\bd_i|$ and $|\cos\bd_i|^{-1}$ are present, canceling out each other);
+	\item $\alpha_i = -1$ if $z_i$ and $z_{i + 1}$ are both volumetric vertices.
+\end{itemize}
+%
+Eq.~\eqref{eqn:seg_contrib_cosine} provides a compact way to encode these rules. 
+}

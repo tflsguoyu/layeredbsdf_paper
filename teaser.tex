@@ -1,0 +1,40 @@
+\begin{teaserfigure}
+	\centering
+	\newlength{\imgHeight}
+	\setlength{\imgHeight}{2.3in}
+	\addtolength{\tabcolsep}{-3.5pt}
+	\begin{tabular}{ccccc}
+		\begin{overpic}[height=\imgHeight]{images/teaser/teaser.jpg}
+			\put(2,3){\bfseries \color{white} \Large (a)}
+		\end{overpic}
+		&
+		\begin{overpic}[height=\imgHeight]{images/teaser/green.jpg}
+			\put(2,3){\bfseries \color{white} \Large (b1)}
+		\end{overpic}
+		&
+		\begin{overpic}[height=\imgHeight]{images/teaser/yellow.jpg}
+			\put(2,3){\bfseries \color{white} \Large (c1)}
+		\end{overpic}
+		&
+		\begin{overpic}[height=\imgHeight]{images/teaser/blue.jpg}
+			\put(2,3){\bfseries \color{white} \Large (d1)}
+		\end{overpic}
+		&
+		\begin{overpic}[height=\imgHeight]{images/teaser/magenta.jpg}
+			\put(2,3){\bfseries \color{white} \Large (e1)}
+		\end{overpic}
+	\end{tabular}
+	\\[3pt]
+	\includegraphics[width=\textwidth]{images/teaser/illustration.pdf}
+	% \begin{tabular}{cccc}
+	% 	\includegraphics[height=0.75in]{images/placeholder2.jpg} &
+	% 	\includegraphics[height=0.75in]{images/placeholder2.jpg} &
+	% 	\includegraphics[height=0.75in]{images/placeholder2.jpg} &
+	% 	\includegraphics[height=0.75in]{images/placeholder2.jpg}
+	% \end{tabular}
+	\caption{\label{fig:teaser}
+		We introduce a new BSDF model leveraging an efficient Monte Carlo simulation algorithm applied locally to layered geometries.
+		Our model enjoys the flexibility of using arbitrary layer interfaces and internal media and is capable of reproducing a wide variety of appearances.
+		This example contains three vases on a tablecloth, all described using our BSDF model (see the insets for layer configurations).
+	}
+\end{teaserfigure}
