@@ -1,0 +1,40 @@
+\begin{figure}[h]
+	\addtolength{\tabcolsep}{-3.5pt}
+	\begin{tabular}{ccc}
+		\begin{overpic}[width=0.315\columnwidth]{img/validations/whitetest/sphere_layered_noMedium_env.jpg}
+			\put(2,3){\bfseries \color{white} (a1)}
+		\end{overpic}
+		&
+		\begin{overpic}[width=0.315\columnwidth]{img/validations/whitetest/sphere_layered_withMedium_env.jpg} 
+			\put(2,3){\bfseries \color{white} (b1)}
+		\end{overpic}	
+		&
+		\begin{overpic}[width=0.315\columnwidth]{img/validations/whitetest/plane_layered_env.jpg} 
+			\put(2,3){\bfseries \color{white} (c1)}
+		\end{overpic}
+		\\
+		\begin{overpic}[width=0.315\columnwidth]{img/validations/whitetest/sphere_layered_noMedium_const.jpg}
+			\put(2,3){\bfseries (a2)}
+		\end{overpic}
+		&
+		\begin{overpic}[width=0.315\columnwidth]{img/validations/whitetest/sphere_layered_withMedium_const.jpg}
+			\put(2,3){\bfseries (b2)}
+		\end{overpic}
+		&
+		\begin{overpic}[width=0.315\columnwidth]{img/validations/whitetest/plane_layered_const.jpg}
+			\put(2,3){\bfseries (c2)}
+		\end{overpic}
+	\end{tabular}
+	%
+	\caption{\label{fig:whitetest}
+		\sz{
+			\textbf{White furnace tests.}
+			We demonstrate that our BSDFs conserve energy properly via three layered BSDF examples respectively given by
+			\textbf{(a)}~a dielectric and a diffuse interface;
+			\textbf{(b)}~a dielectric and a conductor interface and participating medium;
+			\textbf{(c)}~two dielectric interfaces and participating medium in between.
+			All the interfaces and media have albedo one (so no energy is lost due to light-layer interactions).
+			For each example, a simple object is rendered under both environmental~(1) and constant~(2) illuminations.
+		}
+	}
+\end{figure}

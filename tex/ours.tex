@@ -10,16 +10,8 @@ Sampling produces the outgoing direction $\omegaout$ given the incoming one $\om
 
 Multiple importance sampling (MIS) is commonly used to combine multiple techniques to produce a given path, and key to obtaining low-noise results under complex lighting conditions. This technique typically uses the sampling pdfs of the techniques being combined to derive the weights, which requires the pdf values of the layered BSDFs. We introduce two solutions: an unbiased solution for estimating the exact pdf values in expectation, as well as a fast and approximate version which we demonstrate is sufficient for MIS (\S\ref{subsec:ours_pdf}). \sz{In a supplementary document, we show that the estimators are still unbiased in the presence of approximate pdfs for MIS weighting and stochastic evaluation of both weights and function values.}
 
-\begin{figure*}[t]
-	\centering
-    \includegraphics[width=\textwidth]{images/illustration/unidir-bidir.pdf}
-	\caption{
-		\label{fig:estimators}
-		\textbf{Our Monte Carlo estimators} for BSDF values.
-		\textbf{(ab)} Unidirectional estimator uses two path sampling strategies for ``shading'' a vertex on the bottom layer:
-		(a)~sampling the BSDF $f_\uparrow$ of the top interface and connecting at the bottom (next event estimation); or (b)~sampling $\bd_2$ using $f_\downarrow$ and connecting at the top (path continuation). These strategies are combined using local MIS. \textbf{(cde)} Bidirectional estimator: (c) Two subpaths with initial directions $\omegain$ and $\omegaout$. (de) Two full light paths constructed by sampling an additional direction from each sub-path.
-	}
-\end{figure*}
+\input{tex/fig/mc_estimators}
+
 
 \subsection{BSDF sampling}
 \label{subsec:ours_sample}
@@ -65,7 +57,7 @@ Extending this NEE scheme to cross multiple layer interfaces is somewhat tedious
 
 % \begin{figure}[t]
 % 	\centering
-% 	\includegraphics[width=\columnwidth]{images/illustration/bidir.pdf}
+% 	\includegraphics[width=\columnwidth]{img/illustration/bidir.pdf}
 % 	\caption{\label{fig:bidir0}
 % 		\textbf{Our bidirectional estimator.}
 % 		(a) Two subpaths with initial directions $\omegain$ and $\omegaout$;
@@ -143,23 +135,7 @@ The above discussion assumed a single light and single camera subpath. In practi
 For all $s$ and $t$ combinations, Eqs.~\eqref{eqn:bidir_estimate_i} and \eqref{eqn:bidir_estimate_j} provide $2 n_i n_o$ estimators of $f_l(\omegain, \omegaout)$.
 Combining them using MIS gives us our bidirectional estimator for paths of length 2 or more vertices. We handle single vertex paths separately. The details of MIS weighting are discussed in the supplementary document.
 
-% MIS pdf comparison figure
-\begin{figure*}[t]
-	\addtolength{\tabcolsep}{-4pt}
-	\begin{tabular}{ccc}
-		\includegraphics[width=0.32\textwidth]{images/validations/mis/mi_acr_64spp_14min.jpg} & 
-		\includegraphics[width=0.32\textwidth]{images/validations/mis/mi_trt_64spp_4_1min.jpg} & 
-		\includegraphics[width=0.32\textwidth]{images/validations/mis/mi_noMIS_80spp_4_2min.jpg} \\
-		MIS + unbiased pdf (14 min) &
-		MIS + approx. pdf (4 min) &
-		no MIS (4 min) \\ 
-	\end{tabular}
-	\caption{
-		\textbf{Multiple importance sampling} using our BSDFs.
-		\sz{The slabs in this figure use a layered material with rough dielectric on the top, rough gold conductor on the bottom, and blueish homogeneous scattering medium in between.}
-		\textbf{Left:} Using the unbiased pdf from \S\ref{sssec:ours_pdf_unbiased} for MIS in a traditional global path tracer. \textbf{Middle:} Using the approximate pdf from \S\ref{sssec:ours_pdf_approx} is faster and gives equivalent quality. \textbf{Right:} Using no MIS is clearly inferior.}
-	\label{fig:pdf-eval}
-\end{figure*}
+\input{tex/fig/mis}
 
 
 \subsection{Pdf estimation}
@@ -229,11 +205,6 @@ Lastly, we add a small constant term to the estimation result. The exact scaling
 See Figure~\ref{fig:pdf-validate} for validation of the above pdf approaches against ground truth, and Figure~\ref{fig:pdf-eval} for a comparison between renderings using the unbiased and approximated pdf estimation results. 
 \sz{All the other results in our paper are using approximated PDF for MIS. Unbiased PDF is much slower, because it requires long light paths, and has to be computed twice per shading event.}
 
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=\columnwidth]{images/validations/lobe_pdf/pdf.pdf}
-	\caption{\textbf{Validation of our pdf estimates.} The visualization applies a $\log(1+x)$ map for better shape perception. \textbf{Left:} Ground truth by sampling and binning. \textbf{Middle:} Using the unbiased pdf from \S\ref{sssec:ours_pdf_unbiased}. \textbf{Right:} Using the approximate pdf from \S\ref{sssec:ours_pdf_approx} matches the shape of the most important features and approximates longer paths and volume scattering as diffuse.}
-	\label{fig:pdf-validate}
-\end{figure}
+\input{tex/fig/validate_pdf}
 
 

@@ -1,64 +1,7 @@
 \section{Related Work}
 \label{sec:related}
 
-\begin{figure*}[t]
-    \centering
-    \addtolength{\tabcolsep}{-4pt}
-    \begin{tabular}{cccccc}
-		\begin{overpic}[width=0.16\textwidth]{images/validations/compare1/plane_fullsim_ref_3_2h.jpg} 
-    		%\put(2,3){\bfseries \color{white} \Large } 
-    	\end{overpic} &
-		\begin{overpic}[width=0.16\textwidth]{images/validations/compare1/plane_10s_pt_98spp.jpg} 
-		\put(2,3){\bfseries \color{white} 98 spp} 
-		\end{overpic} &
-		\begin{overpic}[width=0.16\textwidth]{images/validations/compare1/plane_10s_bdpt_35spp.jpg} 
-		\put(2,3){\bfseries \color{white} 35 spp} 
-		\end{overpic} &
-		\begin{overpic}[width=0.16\textwidth]{images/validations/compare1/plane_10s_mlt_280spp.jpg}
-		\put(2,3){\bfseries \color{white} 280 spp} 
-		\end{overpic} &
-		\begin{overpic}[width=0.16\textwidth]{images/validations/compare1/plane_10s_uni_56spp.jpg} 
-		\put(2,3){\bfseries \color{white} 56 spp} 
-		\end{overpic} &
-		\begin{overpic}[width=0.16\textwidth]{images/validations/compare1/plane_10s_bi_26spp.jpg} 
-		\put(2,3){\bfseries \color{white} 26 spp} 
-		\end{overpic}
-		\\
-		\begin{overpic}[width=0.16\textwidth]{images/validations/compare1/plane_fullsim_ref_4_8h.jpg} 
-			%\put(2,3){\bfseries \color{white} \Large } 
-		\end{overpic} &
-		\begin{overpic}[width=0.16\textwidth]{images/validations/compare1/plane_10s_pt_60spp.jpg} 
-		\put(2,3){\bfseries \color{white} 60 spp} 
-		\end{overpic} &
-		\begin{overpic}[width=0.16\textwidth]{images/validations/compare1/plane_10s_bdpt_25spp.jpg} 
-		\put(2,3){\bfseries \color{white} 25 spp} 
-		\end{overpic} &
-		\begin{overpic}[width=0.16\textwidth]{images/validations/compare1/plane_10s_mlt_80spp.jpg} 
-		\put(2,3){\bfseries \color{white} 80 spp} 
-		\end{overpic} &
-		\begin{overpic}[width=0.16\textwidth]{images/validations/compare1/plane_10s_uni_15spp.jpg} 
-		\put(2,3){\bfseries \color{white} 15 spp} 
-		\end{overpic} &
-		\begin{overpic}[width=0.16\textwidth]{images/validations/compare1/plane_10s_bi_19spp.jpg} 
-		\put(2,3){\bfseries \color{white} 19 spp} 
-		\end{overpic}
-		\\
-		%
-		Reference &
-		Standard PT &
-		Standard BDPT &
-		Standard MLT &
-		Our unidirectional &
-		Our bidirectional
-	\end{tabular}
-    \caption{\label{fig:validation1}
-    	\textbf{Equal-time comparisons} of our unidirectional and bidirectional approach to standard transport algorithms, on a simple flat layered configuration lit by a small area light. 
-    	\sz{For standard PT, BDPT and MLT, results are all generated using 3D tracing by applying these algorithms in a simple 3D scene containing a very large slab with flat interfaces.} 
-    	%Again, performance is dominated by shading computation, as the scene is trivial.
-    	\textbf{Top}: A single slab with Henyey-Greenstein scattering between two interfaces, where our estimators perform similarly, but both significantly outperform path tracing, bidirectional and Metropolis transport. \textbf{Bottom}: A more complex configuration with two slabs and three interfaces; both media are using an anisotropic microflake phase function \cite{Jakob:2010:RTF}. Our bidirectional estimator is a clear winner in this case.
-    	\sz{The references are generated using standard PT with 100K spp, and all the other images are rendered in 10 seconds.}
-    }
-\end{figure*}
+\input{tex/fig/equal_time_compare}
 
 \subsection{Discretized layered BSDFs}
 %\myparagraph{Discretized layered BSDFs}
@@ -82,31 +25,7 @@ The microfacet model recently developed by Heitz~et~al.~\shortcite{Heitz:2016:MM
 %\myparagraph{Capability comparison}
 In Figure \ref{fig:compare-previous}, we compare the capabilities of our approach to recent work \cite{Zeltner2018,Belcour2018}. We consider three features supported by our approach: surface anisotropy, spatial variation, and volumetric medium anisotropy. Only one of these is supported in the compared systems: spatial variation in Belcour's approach and surface anisotropy in Zeltner's.
 
-% comparison figure (Zeltner / Belcour)
-\begin{figure}[t]
-	\addtolength{\tabcolsep}{-3pt}
-	\begin{tabular}{ccc}
-	    \includegraphics[width=0.315\columnwidth]{images/validations/compare2/aniso_comb_hor_hor_512spp_17min.jpg} &
-	    \includegraphics[width=0.315\columnwidth]{images/validations/compare2/aniso_comb_hor_hor_wenzel.jpg} &
-	    \includegraphics[width=0.315\columnwidth]{images/validations/compare2/na.pdf} \\
-
-	    \includegraphics[width=0.315\columnwidth]{images/validations/compare2/sphere_layered_1024spp_37min.jpg} &
-	    \includegraphics[width=0.315\columnwidth]{images/validations/compare2/na2.pdf} &
-	    \includegraphics[width=0.315\columnwidth]{images/validations/compare2/sphere_laurent_1024spp_1_5min.jpg} \\
-
-	    \includegraphics[width=0.315\columnwidth]{images/validations/compare2/sphere_1024spp_60min.jpg} &
-	    \includegraphics[width=0.315\columnwidth]{images/validations/compare2/na.pdf} &
-	    \includegraphics[width=0.315\columnwidth]{images/validations/compare2/na.pdf} \\
-
-	    Ours &
-	    [Zeltner 2018] &
-	    \cite{Belcour2018}
-	\end{tabular}
-	%
-    \caption{\label{fig:compare-previous}
-    	\textbf{Comparison to previous work.} The \textbf{top row} shows an example with anisotropic surface reflectance, where our solution closely matches Zeltner's, but Belcour's approach does not support anisotropy. The \textbf{middle row} shows an example with spatial variation in the parameters; here our method closely matches Belcour's, but Zeltner's approach does not naturally support spatial variation. The \textbf{bottom row} shows a two-layer configuration with anisotropic microflake phase functions, which is only supported by our method.
-    }
-\end{figure}
+\input{tex/fig/compare_previous}
 
 %\sz{
 %\myparagraph{Specialized models}

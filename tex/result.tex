@@ -30,46 +30,8 @@ Under constant lighting (where identical amount of light comes from all directio
 }
 
 % White Furnace test figure
-\begin{figure}[h]
-	\addtolength{\tabcolsep}{-3.5pt}
-	\begin{tabular}{ccc}
-		\begin{overpic}[width=0.315\columnwidth]{images/validations/whitetest/sphere_layered_noMedium_env.jpg}
-			\put(2,3){\bfseries \color{white} (a1)}
-		\end{overpic}
-		&
-		\begin{overpic}[width=0.315\columnwidth]{images/validations/whitetest/sphere_layered_withMedium_env.jpg} 
-			\put(2,3){\bfseries \color{white} (b1)}
-		\end{overpic}	
-		&
-		\begin{overpic}[width=0.315\columnwidth]{images/validations/whitetest/plane_layered_env.jpg} 
-			\put(2,3){\bfseries \color{white} (c1)}
-		\end{overpic}
-		\\
-		\begin{overpic}[width=0.315\columnwidth]{images/validations/whitetest/sphere_layered_noMedium_const.jpg}
-			\put(2,3){\bfseries (a2)}
-		\end{overpic}
-		&
-		\begin{overpic}[width=0.315\columnwidth]{images/validations/whitetest/sphere_layered_withMedium_const.jpg}
-			\put(2,3){\bfseries (b2)}
-		\end{overpic}
-		&
-		\begin{overpic}[width=0.315\columnwidth]{images/validations/whitetest/plane_layered_const.jpg}
-			\put(2,3){\bfseries (c2)}
-		\end{overpic}
-	\end{tabular}
-	%
-	\caption{\label{fig:whitetest}
-		\sz{
-		\textbf{White furnace tests.}
-		We demonstrate that our BSDFs conserve energy properly via three layered BSDF examples respectively given by
-		\textbf{(a)}~a dielectric and a diffuse interface;
-		\textbf{(b)}~a dielectric and a conductor interface and participating medium;
-		\textbf{(c)}~two dielectric interfaces and participating medium in between.
-		All the interfaces and media have albedo one (so no energy is lost due to light-layer interactions).
-		For each example, a simple object is rendered under both environmental~(1) and constant~(2) illuminations.
-		}
-	}
-\end{figure}
+\input{tex/fig/white_furnace_test}
+
 
 \subsection{Main Results}
 \label{subsec:res_main}
@@ -87,32 +49,9 @@ Further, due to varying amounts of attenuation at different thickness, these hig
 In Figure~\ref{fig:result_glints}-c, the height variation is instead applied to the top dielectric interface, causing the clear reflection of the environment to be replaced by a blurred one.
 Further, since the areas under the continents now have larger thickness, their colors become more saturated.
 Our layered BSDF model is capable of producing all these appearances using a simple set of parameters (thickness, roughness and medium absorption) in conjunction with spatial variation.
- 
 
-\begin{figure*}[t]
-	\centering
-	\addtolength{\tabcolsep}{-3pt}
-	\begin{tabular}{ccc}
-		\begin{overpic}[width=0.32\textwidth]{images/results/glints_globe_none_combine.jpg}
-			\put(2,3){\bfseries \large (a)}
-		\end{overpic}
-		&
-		\begin{overpic}[width=0.32\textwidth]{images/results/glints_globe_bottom_combine.jpg}
-			\put(2,3){\bfseries \large (b)}
-		\end{overpic}
-		&
-		\begin{overpic}[width=0.32\textwidth]{images/results/glints_globe_top_combine.jpg}
-			\put(2,3){\bfseries \large (c)}
-		\end{overpic}
-	\end{tabular}
-	\caption{\label{fig:result_glints}
-		\textbf{Top vs. bottom height variation.}
-		Thanks to the physically-based nature of our layered BSDF model, manipulating heights on its top and bottom interfaces has greatly varying effects on the final appearance. The height variation drives both normals and thickness differences (and thus medium absorption).
-		\textbf{(a)}~No height variation.
-		\textbf{(b)}~Height variation applied to the bottom interface.
-		\textbf{(c)}~Height variation applied to the top interface.
-	}
-\end{figure*}	
+\input{tex/fig/globe} 
+	
 
 \subsubsection{Application: Complex thin sheet transmission}
 %\myparagraph{Application: Complex thin sheet transmission}
@@ -129,30 +68,9 @@ When coupled with different phase functions (Henyey-Greenstein and von-Mises-Fis
 
 Please see the supplemental images and video for more variations with similar configurations.
 
-\begin{figure*}[t]
-	\centering
-	\addtolength{\tabcolsep}{-3.5pt}
-	\begin{tabular}{cccc}
-		\includegraphics[width=0.24\textwidth]{images/results/zhaoyun_bg1_1.jpg} &
-		\includegraphics[width=0.24\textwidth]{images/results/zhaoyun_bg1_2.jpg} &
-		\includegraphics[width=0.24\textwidth]{images/results/zhaoyun_bg2_1.jpg} &
-		\includegraphics[width=0.24\textwidth]{images/results/zhaoyun_bg2_2.jpg}\\
-		Back-lit & Front-lit & Back-lit & Front-lit
-		\\[5pt]
-		\includegraphics[width=0.24\textwidth]{images/results/magnify_g9.jpg} &
-		\includegraphics[width=0.24\textwidth]{images/results/magnify_g99.jpg} &
-		\includegraphics[width=0.24\textwidth]{images/results/magnify_vmf10.jpg} &
-		\includegraphics[width=0.24\textwidth]{images/results/magnify_vmf100.jpg}\\
-		HG ($g = 0.9$) & HG ($g = 0.99$) & vMF ($\kappa = 10$) & vMF ($\kappa = 100$)
-	\end{tabular}
-	%\caption{albedo:0.2,0.95,0.8; $\sigma_t$:1.2,6,12}
-	\caption{\label{fig:result_transmit}
-		\textbf{Reflection and transmission:}
-		Our BSDF models are capable of accurately capturing not only reflection but also transmission from thin layers. \textbf{Top:} A flat surface rendered with our layered BSDF under varying illuminations. This model involves dielectric interfaces with spatially varying roughnesses, normal maps, and thickness. The optical densities (mean free paths) are spectrally varying, which results in subtle color variations across the surface. Note that the color (albedo) is not varying. \textbf{Bottom:} A flat surface with a layered BSDF of spatially varying thickness (which captures the shape of real convex lens). A range of spatially varying and physically plausible blurring effects can be achieved by varying phase functions.
-	}
-\end{figure*}
+\input{tex/fig/jade}
 
-\input{performance}
+\input{tex/tab/performance}
 
 \subsubsection{Application: Anisotropic layer media for fabrics}
 %\myparagraph{Application: Anisotropic layer media for fabrics}
@@ -182,43 +100,10 @@ Further, we provide baseline timings using ``trivial'' BSDFs (that require no st
 Our performance does degrade with the presence of optically thick and highly scattering media.
 However, as already demonstrated in Figure~\ref{fig:validation1}, rendering using our model is still significantly faster than explicitly simulating light transport in layered geometries.
 
-\begin{figure*}[t]
-	\centering
-	\addtolength{\tabcolsep}{-3.5pt}
-	\begin{tabular}{ccc}
-		\begin{overpic}[width=0.322\textwidth]{images/results/satin_spp128.jpg}
-			\put(2,60){\bfseries \color{white} \large (a) Satin}
-		\end{overpic}
-		&
-		\begin{overpic}[width=0.322\textwidth]{images/results/twill_128spp.jpg}
-			\put(2,60){\bfseries \color{white} \large (b) Twill}
-		\end{overpic}
-		&
-		\begin{overpic}[width=0.322\textwidth]{images/results/velvet_spp128.jpg}
-			\put(2,60){\bfseries \color{white} \large (c) Velvet}
-		\end{overpic}
-	\end{tabular}
-	\caption{\label{fig:result_mat}
-		\textbf{Anisotropic media within layers.}
-		Our layered BSDF offers the generality to use anisotropic layer media with microflake phase functions.
-		This example shows three fabrics modeled with our BSDF model with anisotropic layer media: (a) satin; (b) twill; and (c) velvet.
-	}
-\end{figure*}    
+\input{tex/fig/cloth}
 
-\begin{figure*}[t]
-	\centering
-	\addtolength{\tabcolsep}{-3.5pt}
-	\begin{tabular}{cccc}
-		\includegraphics[width=0.24\textwidth]{images/results/gabardine_ref.jpg} &
-		\includegraphics[width=0.24\textwidth]{images/results/gabardine_ref_inset_128spp.jpg} &
-		\includegraphics[width=0.24\textwidth]{images/results/gabardine.jpg} &
-		\includegraphics[width=0.24\textwidth]{images/results/gabardine_inset_512spp.jpg} \\
-		\multicolumn{2}{c}{(a) Volume rendering} & \multicolumn{2}{c}{(b) Our BSDF + fiber-direction map}
-	\end{tabular}
-	\caption{\label{fig:redcloth}
-		\textbf{Comparison to volumetric cloth.} \textbf{(a)}~Images rendered from micro-CT volumetric data, using the microflake phase function. \textbf{(b)}~Renderings using our approach using a single microflake volumetric layer, where we are using fiber direction maps extracted from the volumetric data. Our rendering is 40$\times$ faster than the volumetric simulation.
-	}
-\end{figure*} 
+\input{tex/fig/cloth_compare}
+
 
 \subsection{Limitations and future work}
 \label{subsec:limitation}
@@ -231,27 +116,5 @@ Using fast approximated solutions such as~\cite{Jensen:2001:PMS,Frisvad:2014:DDM
 Lastly, since we model light transport using traditional radiative transfer, wave effects such as thin film interference are not handled.
 An interesting challenge is to integrate wave optics into our model to accurately and efficiently handle light interference and phase shifts.
 
-\begin{figure*}[t]
-	\centering
-	\addtolength{\tabcolsep}{-3pt}
-	\begin{tabular}{ccc}
-		\begin{overpic}[width=0.32\textwidth]{images/results/kettle_drop.jpg}
-			\put(2,3){\bfseries \color{black} \Large (a)}
-		\end{overpic}
-		&
-		\begin{overpic}[width=0.32\textwidth]{images/results/kettle_logo.jpg}
-			\put(2,3){\bfseries \color{black} \Large (b)}
-		\end{overpic}
-		&
-		\begin{overpic}[width=0.32\textwidth]{images/results/kettle_all.jpg}
-			\put(2,3){\bfseries \color{black} \Large (c)}
-		\end{overpic}
-	\end{tabular}
-	\caption{\label{fig:result_multilayer}
-		\textbf{Multi-layer BSDF.}
-		This result shows renderings of a kettle described with: 
-		\textbf{(a)}~a single transparent layer with a dielectric top interface capturing the water drops over a conducting bottom surface with scratches; 
-		\textbf{(b)}~a single translucent layer with spatially varying optical thicknesses and albedo over the same bottom surface of (a);
-		\textbf{(c)}~a dual layer configuration created by stacking the transparent layer~(a) over the translucent one~(b).
-	}
-\end{figure*}
+\input{tex/fig/kettle}
+

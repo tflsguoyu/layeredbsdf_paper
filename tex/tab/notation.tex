@@ -1,0 +1,37 @@
+\begin{table}
+	\caption{Notation used in the path formulation (\S\ref{sec:path-formulation}).}
+	\label{tab:notation}
+	\begin{tabular}{ll}
+		$\omegain$ & light direction \\
+		$\omegaout$ & camera direction \\
+		$\cos \bom$ & $z$-component of the unit vector $\bom$ \\
+		$\ind(x)$ & binary indicator function \\
+		\hline
+		
+		$f_l(\omegain, \omegaout)$ & layered BSDF (our goal) \\
+		$f_s(z, \omegain, \omegaout)$ & interface BSDF at depth $z$ \\
+		$f_\uparrow, f_\downarrow$ & BSDFs $f_s$ at top and bottom interface \\
+		$f_p(\omegain, \omegaout)$ & phase function (normalized as a pdf) \\
+		$\sigma_s, \sigma_t$ & scattering and aborption coefficient \\
+		$\hat f_p$ & reduced phase function, $\hat f_p = \sigma_s f_p$ \\
+		\hline
+		
+		$z_i$ & depth of $i$-th path vertex \\
+		$\bd_i$ & direction of $i$-th path segment \\
+		$\bar x$ & light path $(\bd_0,\ z_1,\ \bd_1,\ \dots,\ z_k,\ \bd_k)$ \\
+		$v_i$ & $i$-th vertex contribution \\
+		$s_i$ & $i$-th segment contribution \\
+		$\tau(z, z', \bom)$ & transfer through segment \\
+		$\alpha_i$ & $i$-th segment cosine term exponent \\
+		$\mu(\bar x)$ & path space measure \\
+		$\sigma(\bom)$ & solid angle measure on unit directions \\
+		$\lambda(z)$ & line (Lebesgue) measure on real numbers \\
+		$p(\bar x)$ & pdf of path $\bar x$ in measure $\mu(\bar x)$ \\
+		\hline
+		
+		$L_v(z, \omegaout)$ & volume radiance \\
+		$L_s(z, \omegaout)$ & outgoing surface radiance \\
+		$L^i_s(z, \omegain)$ & incoming surface radiance \\
+		$S(z, \bom)$ & source term in radiative transfer eq. \\
+	\end{tabular}
+\end{table}

@@ -1,30 +1,9 @@
 \section{Background and overview}
 \label{sec:background}
 
-\begin{figure}[t]
-    \centering
-    \addtolength{\tabcolsep}{-4pt}
-    \begin{tabular}{ccc}
-		\includegraphics[width=0.315\columnwidth]{images/validations/lobe_bsdf/bsdf_sample_all.jpg} &
-		\includegraphics[width=0.315\columnwidth]{images/validations/lobe_bsdf/bsdf_eval_uni_all.jpg} &
-		\includegraphics[width=0.315\columnwidth]{images/validations/lobe_bsdf/bsdf_eval_bi_all.jpg} \\
-		Ground truth &
-		Our unidir. &
-		Our bidir. \\
-	\end{tabular}
-    \caption{\label{fig:hemispheres}
-    	\textbf{Outgoing lobes of a layered BSDF} (reflection and transmission) visualized as projected hemispheres. \textbf{Left:} ground truth computed by sampling and binning the light paths. \textbf{Middle:} Our unidirectional estimator. \textbf{Right:} Our bidirectional estimator (same time).
-    }
-\end{figure}
+\input{tex/fig/lobes}
 
-\begin{figure}[t]
-	\includegraphics[width=0.6\columnwidth]{images/illustration/assumption.pdf}
-	\caption{\label{fig:thin_layer}
-		\textbf{Small displacement assumption:}
-		when light hits a thin layer, it gets reflected and refracted by the interfaces and scattered and absorbed internally.
-		Since the geometric thickness $h$ of the layer is small, we assume the displacements (e.g., $\Delta x$) of light's entrance and departure locations can be neglected.
-	}
-\end{figure}
+\input{tex/fig/assumption}
 
 In this section, we explicitly state the assumptions of our method, provide background on the standard path formulation of light transport, and provide a quick overview of the rest of the paper.
 

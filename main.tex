@@ -44,7 +44,7 @@
 
 % end of preamble.
 
-\input{macros}
+\input{tex/macros}
 
 % Alter some LaTeX defaults for better treatment of figures:
 % See p.105 of "TeX Unbound" for suggested values.
@@ -91,7 +91,7 @@
 % This command defines the author string for running heads.
 \renewcommand{\shortauthors}{Guo, Ha\v{s}an, and Zhao}
 
-\input{abstract}
+\input{tex/abstract}
 
 %CCS
 \begin{CCSXML}
@@ -116,31 +116,31 @@
 \keywords{BSDF, layered materials, Monte Carlo integration}
 
 % A "teaser" figure, centered below the title and authors and above the body of the work.
-\input{teaser}
+\input{tex/teaser}
 
 % Processes all of the front-end information and starts the body of the work.
 \maketitle
 
-\input{intro}
+\input{tex/intro}
 %
-\input{related}
+\input{tex/related}
 %
-\input{background}
+\input{tex/background}
 %
-\input{path-formulation}
+\input{tex/path-formulation}
 %
-\input{ours}
+\input{tex/ours}
 %
-\input{result}
+\input{tex/result}
 %
-\input{conclusion}
+\input{tex/conclusion}
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}
 
 \clearpage
 \appendix
-\input{appendix_1}
-\input{appendix_2}
-\input{appendix_3}
+\input{tex/appendix_1}
+\input{tex/appendix_2}
+\input{tex/appendix_3}
 \end{document}
