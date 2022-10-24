@@ -1,32 +1,25 @@
-% Alter some LaTeX defaults for better treatment of figures:
-% See p.105 of "TeX Unbound" for suggested values.
-% See pp. 199-200 of Lamport's "LaTeX" book for details.
-%   General parameters, for ALL pages:
+\usepackage{booktabs} % For formal tables
+\usepackage{comment}
+\usepackage[textfont=normalfont,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage{overpic,bm}
+\usepackage{multirow}
+
 \renewcommand{\topfraction}{0.9}	% max fraction of floats at top
 \renewcommand{\bottomfraction}{0.8}	% max fraction of floats at bottom
-%   Parameters for TEXT pages (not float pages):
+
 \setcounter{topnumber}{2}
 \setcounter{bottomnumber}{2}
 \setcounter{totalnumber}{4}     % 2 may work better
 \setcounter{dbltopnumber}{2}    % for 2-column pages
 \renewcommand{\dbltopfraction}{0.99}	% fit big float above 2-col. text
 \renewcommand{\textfraction}{0.01}	% allow minimal text w. figs
-%   Parameters for FLOAT pages (not text pages):
 \renewcommand{\floatpagefraction}{0.7}	% require fuller float pages
-% N.B.: floatpagefraction MUST be less than topfraction !!
 \renewcommand{\dblfloatpagefraction}{0.7}	% require fuller float pages
 
-\iffalse
-%\iftrue
-\newcommand{\sz}[1]{{\color{blue}#1}}
-\newcommand{\szrem}[1]{{\color{blue}[SZ: #1]}}
-\newcommand{\mhrem}[1]{{\color{red}[MH: #1]}}
-\newcommand{\todo}[1]{\marginpar{\Large {\color{red} $\spadesuit$}} {\bf \color{red} [Todo: #1]}}
-\else
 \newcommand{\sz}[1]{#1}
 \newcommand{\szrem}[1]{}
 \newcommand{\todo}[1]{}
-\fi
 
 \newcommand{\E}{\mathrm{e}}
 \newcommand{\bd}{\bm{d}}
